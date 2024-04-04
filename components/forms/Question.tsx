@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { questionsSchema } from "@/lib/validations";
 import { Badge } from "../ui/badge";
 import Image from "next/image";
+import { createQuestion } from "@/lib/actions/question.action";
 
 const type: any = "create";
 
@@ -35,16 +36,17 @@ const Question = () => {
         },
     });
 
-    function onSubmit(values: z.infer<typeof questionsSchema>) {
-        isSubmitting(true);
+    async function onSubmit(values: z.infer<typeof questionsSchema>) {
+        setisSubmitting(true);
 
         try {
             // make an async call to yout API -> create a question
             // contain all form data
+            await createQuestion({});
             // navigate to home page
         } catch (error) {
         } finally {
-            isSubmitting(false);
+            setisSubmitting(false);
         }
     }
 
@@ -127,6 +129,10 @@ const Question = () => {
                                 onInit={(evt, editor) =>
                                     // @ts-ignore
                                     (editorRef.current = editor)
+                                }
+                                onBlur={field.onBlur}
+                                onEditorChange={(content) =>
+                                    field.onChange(content)
                                 }
                                 initialValue=""
                                 init={{
