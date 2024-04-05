@@ -5,46 +5,13 @@ import NoResult from "@/components/shared/NoResult/NoResult";
 import LocalSearch from "@/components/shared/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
+import { getQuestions } from "@/lib/actions/question.action";
 import Link from "next/link";
 
-const questions = [
-    {
-        _id: "1",
-        title: "How to create a new project in react?",
-        tags: [
-            { _id: "1", name: "React" },
-            { _id: "2", name: "JavaScript" },
-        ],
-        author: {
-            _id: "authorId1",
-            name: "John Doe",
-            picture: "author1.jpg",
-        },
-        answers: [],
-        views: 100,
-        upvotes: 10,
-        createdAt: new Date("2021-09-01T00:00:00.000Z"),
-    },
-    {
-        _id: "2",
-        title: "How to center a div?",
-        tags: [
-            { _id: "3", name: "Next14" },
-            { _id: "4", name: "HTML" },
-        ],
-        author: {
-            _id: "authorId2",
-            name: "Dohn Joe",
-            picture: "author2.jpg",
-        },
-        answers: [],
-        views: 67,
-        upvotes: 9,
-        createdAt: new Date("2021-10-01T00:00:00.000Z"),
-    },
-];
+export default async function Home() {
+    const result = await getQuestions({});
 
-export default function Home() {
+    // console.log(result.questions);
     return (
         <>
             <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -75,8 +42,8 @@ export default function Home() {
             <HomeFilters />
 
             <div className="mt-10 flex w-full flex-col gap-6">
-                {questions.length > 0 ? (
-                    questions.map((question) => (
+                {result.questions.length > 0 ? (
+                    result.questions.map((question) => (
                         <QuestionCard
                             key={question._id}
                             _id={question._id}

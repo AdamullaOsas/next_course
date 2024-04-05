@@ -9,10 +9,11 @@ export async function getUserById(params: any) {
 
         const { userId } = params;
 
-        const user = await User.findById({ clerkId: userId });
+        const user = await User.findOne({ clerkId: userId });
 
         return user;
-    } catch (error: any) {
+    } catch (error) {
         console.log(error);
+        throw error;
     }
 }
