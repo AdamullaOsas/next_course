@@ -10,6 +10,7 @@ export default authMiddleware({
         "/profile/:id",
         "/community",
         "/jobs",
+        "/.well-known/vercel/flags",
     ],
     ignoredRoutes: ["/api/webhook", "/api/chatgpt"],
 });
