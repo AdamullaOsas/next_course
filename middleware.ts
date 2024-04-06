@@ -24,6 +24,8 @@ export default authMiddleware({
         "/api/webhook",
         "/api/chatgpt",
         "/.well-known/vercel/flags",
+        "/assets/images/dark-illustration.png",
+        "/assets/images/dark-illustration.png%20",
     ],
 });
 
