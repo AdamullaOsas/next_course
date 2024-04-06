@@ -10,11 +10,20 @@ import { Editor } from "@tinymce/tinymce-react";
 import { useTheme } from "@/context/ThemeProvider";
 import { Button } from "../ui/button";
 import Image from "next/image";
+import { createAnswer } from "@/lib/actions/answer.action";
+import { usePathname } from "next/navigation";
 
-const Answer = () => {
+interface Props {
+    question: string;
+    questionId: string;
+    authorId: string;
+}
+
+const Answer = ({ question, questionId, authorId }: Props) => {
     const [isSubbmitting, setisSubbmitting] = useState(false);
     const { mode } = useTheme();
     const editorRef = useRef(null);
+    const pathname = usePathname();
     const form = useForm<z.infer<typeof AnswerSchema>>({
         resolver: zodResolver(AnswerSchema),
         defaultValues: {
@@ -22,7 +31,29 @@ const Answer = () => {
         },
     });
 
-    const handleCreateAnswer = (data: any) => {};
+    const handleCreateAnswer = async (values: z.infer<typeof AnswerSchema>) => {
+        setisSubbmitting(true);
+
+        try {
+            await createAnswer({
+                content: values.answer,
+                author: JSON.parse(authorId),
+                question: JSON.parse(questionId),
+                path: pathname,
+            });
+
+            form.reset();
+
+            if (editorRef.current) {
+                // @ts-ignore
+                editorRef.current.setContent("");
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setisSubbmitting(false);
+        }
+    };
     return (
         <div>
             <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
@@ -107,7 +138,7 @@ const Answer = () => {
                     />
                     <div className="flex justify-end">
                         <Button
-                            type="button"
+                            type="submit"
                             className="primary-gradient w-fit text-white"
                             disabled={isSubbmitting}
                         >
