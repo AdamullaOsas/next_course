@@ -1,15 +1,23 @@
 import { authMiddleware } from "@clerk/nextjs";
 
+// Extracted routes from the provided data
+const routes = [
+    "/",
+    "/community",
+    "/collection",
+    "/jobs",
+    "/tags",
+    "/profile",
+    "/ask-question",
+];
+
 export default authMiddleware({
     publicRoutes: [
-        "/",
+        ...routes, // Add extracted routes to publicRoutes array
         "/api/webhook",
         "/question/:id",
-        "/tags",
         "/tags/:id",
         "/profile/:id",
-        "/community",
-        "/jobs",
         "/.well-known/vercel/flags",
     ],
     ignoredRoutes: [
