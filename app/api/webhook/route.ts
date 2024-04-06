@@ -7,9 +7,6 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
     // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
-
-    // TODO: Add your webhook secret to .env.local
-
     const WEBHOOK_SECRET = process.env.NEXT_CLERK_WEBHOOK_SECRET;
 
     if (!WEBHOOK_SECRET) {
@@ -35,7 +32,7 @@ export async function POST(req: Request) {
     const payload = await req.json();
     const body = JSON.stringify(payload);
 
-    // Create a new Svix instance with your secret.
+    // Create a new SVIX instance with your secret.
     const wh = new Webhook(WEBHOOK_SECRET);
 
     let evt: WebhookEvent;
@@ -56,6 +53,8 @@ export async function POST(req: Request) {
 
     const eventType = evt.type;
 
+    console.log({ eventType });
+
     if (eventType === "user.created") {
         const {
             id,
@@ -66,17 +65,18 @@ export async function POST(req: Request) {
             last_name,
         } = evt.data;
 
-        // create a new user in your database
-
+        // Create a new user in your database
         const mongoUser = await createUser({
             clerkId: id,
-            name: `${first_name} ${last_name ? `${last_name}` : ""}`,
+            name: `${first_name}${last_name ? ` ${last_name}` : ""}`,
             username: username!,
             email: email_addresses[0].email_address,
             picture: image_url,
         });
+
         return NextResponse.json({ message: "OK", user: mongoUser });
     }
+
     if (eventType === "user.updated") {
         const {
             id,
@@ -87,26 +87,30 @@ export async function POST(req: Request) {
             last_name,
         } = evt.data;
 
+        // Create a new user in your database
         const mongoUser = await updateUser({
             clerkId: id,
             updateData: {
-                name: `${first_name} ${last_name ? `${last_name}` : ""}`,
+                name: `${first_name}${last_name ? ` ${last_name}` : ""}`,
                 username: username!,
                 email: email_addresses[0].email_address,
                 picture: image_url,
             },
             path: `/profile/${id}`,
         });
+
         return NextResponse.json({ message: "OK", user: mongoUser });
     }
 
     if (eventType === "user.deleted") {
         const { id } = evt.data;
 
-        const deletedUser = await deleteUser({ clerkId: id! });
+        const deletedUser = await deleteUser({
+            clerkId: id!,
+        });
 
         return NextResponse.json({ message: "OK", user: deletedUser });
     }
 
-    return new Response("", { status: 200 });
+    return new Response("", { status: 201 });
 }
