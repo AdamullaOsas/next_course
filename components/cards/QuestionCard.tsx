@@ -5,6 +5,7 @@ import Metric from "../shared/Metric/Metric";
 import { formatNumber, getTimestamp } from "@/lib/utils";
 
 interface Props {
+    clerkId?: string;
     _id: string;
     title: string;
     tags: { _id: string; name: string }[];
@@ -20,6 +21,7 @@ interface Props {
 }
 
 const QuestionCard = ({
+    clerkId,
     _id,
     title,
     tags,
@@ -42,6 +44,8 @@ const QuestionCard = ({
                         </h3>
                     </Link>
                 </div>
+
+                {/* shit */}
             </div>
             <div className="mt-3.5 flex flex-wrap gap-2">
                 {tags.map((tag) => (
