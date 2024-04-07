@@ -25,12 +25,14 @@ export const getTimestamp = (createdAt: Date): string => {
     }
 };
 
-export const formatNumber = (number: number): string => {
-    if (number >= 1000000) {
-        return (number / 1000000).toFixed(1) + "M";
-    } else if (number >= 1000) {
-        return (number / 1000).toFixed(1) + "K";
+export const formatNumber = (num: number): string => {
+    if (num >= 1000000) {
+        const formattedNum = (num / 1000000).toFixed(1);
+        return `${formattedNum}M`;
+    } else if (num >= 1000) {
+        const formattedNum = (num / 1000).toFixed(1);
+        return `${formattedNum}K`;
     } else {
-        return number.toString();
+        return num.toString();
     }
 };
