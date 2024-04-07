@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 import { formatNumber, getTimestamp } from "@/lib/utils";
-import Metric from "../shared/Metric/Metric";
 import { SignedIn } from "@clerk/nextjs";
 import EditDeleteAction from "../shared/EditDeleteAction/EditDeleteAction";
+import Metric from "../shared/Metric/Metric";
 
 interface Props {
     clerkId?: string | null;
@@ -46,6 +46,7 @@ const AnswerCard = ({
                         {question.title}
                     </h3>
                 </div>
+
                 <SignedIn>
                     {showActionButtons && (
                         <EditDeleteAction
