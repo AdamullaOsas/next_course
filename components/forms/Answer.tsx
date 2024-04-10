@@ -21,6 +21,7 @@ interface Props {
 
 const Answer = ({ question, questionId, authorId }: Props) => {
     const [isSubbmitting, setisSubbmitting] = useState(false);
+    const [isSubbmittingAI, setisSubbmittingAI] = useState(false);
     const { mode } = useTheme();
     const editorRef = useRef(null);
     const pathname = usePathname();
@@ -54,6 +55,30 @@ const Answer = ({ question, questionId, authorId }: Props) => {
             setisSubbmitting(false);
         }
     };
+
+    const generateAIAnswer = async () => {
+        if (!authorId) return;
+
+        setisSubbmittingAI(true);
+
+        try {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt`,
+                {
+                    method: "POST",
+                    body: JSON.stringify({ question }),
+                }
+            );
+            const aiAnswer = await response.json();
+
+            alert(aiAnswer.reply);
+        } catch (error) {
+            console.log(error);
+            throw error;
+        } finally {
+            setisSubbmittingAI(false);
+        }
+    };
     return (
         <div>
             <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
@@ -62,7 +87,7 @@ const Answer = ({ question, questionId, authorId }: Props) => {
                 </h4>
                 <Button
                     className="btn light-border-2 gap-1.5 rounded-md px-4 py-2.5 text-primary-500 shadow-none dark:text-primary-500"
-                    onClick={() => {}}
+                    onClick={generateAIAnswer}
                 >
                     <Image
                         src="/assets/icons/stars.svg"
