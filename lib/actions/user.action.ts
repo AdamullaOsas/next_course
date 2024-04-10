@@ -17,7 +17,6 @@ import Question from "@/database/question.model";
 import Tag from "@/database/tag.model";
 import { FilterQuery } from "mongoose";
 import Answer from "@/database/answer.model";
-import { skip } from "node:test";
 
 export async function getUserById(params: any) {
     try {
@@ -279,7 +278,7 @@ export async function getUserQuestions(params: GetUserStatsParams) {
         });
 
         const userQuestions = await Question.find({ author: userId })
-            .sort({ views: -1, upvotes: -1 })
+            .sort({ createdAt: -1, views: -1, upvotes: -1 })
             .skip(skipAmount)
             .limit(pageSize)
             .populate("tags", "_id name")
