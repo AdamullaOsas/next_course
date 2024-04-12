@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import path from "path";
 import React, { useEffect, useState } from "react";
 
 interface LocalSearchProps {
@@ -75,7 +74,7 @@ const LocalSearch = ({
                 placeholder={placeholder}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="paragraph-regular no-focus placeholder background-light800_darkgradient border-none shadow-none outline-none"
+                className="paragraph-regular no-focus placeholder text-dark400_light700 border-none bg-transparent shadow-none outline-none"
             />
             {iconPosition === "right" && (
                 <Image
